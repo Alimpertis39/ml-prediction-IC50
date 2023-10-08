@@ -16,14 +16,20 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
 3. Then, merge these datasets to the train and test sets to integrate extra information and remove the NaN value rows.
 4. The TCGA value, which is a categorical variable, is encoded with one-hot encoding, and therefore create binary columns for each one of the possible labels of the categorical variable.
 5. Create a new categorical variable based on the
-6. From the Morgan Fingerprints for each drug structure, take the total number of ones
+6. From the Morgan Fingerprints for each drug structure, take the total number of ones.
 7. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
    * One feature engineering that improve the results would be normalization on the profile matrix data. Then the Z-score used the mean and the std of each column(expressed gene). Important: these mean and std of the train set would used on the test set in order to avoid bias on the test set* 
 
-Some ways to improve the prediction results: Normalization to the gene expression matrix values. I would normalize the train set to have Z-score. I would apply the mean and the std of the train set to the test set in order to avoid the bias to the test set.
+### Model development
+1. Random Forest (Multiple decision trees combined to make predictions)
+2. SVR (Support Vector Regression)
+   *Another way to improve the results would be to make optimization parameter, e.g. optimization of the _estimator of random forest algorithm*
+   *Apply Cross Validation with 5 folds to have a more robust model's performance. Important that the performance was almost similar, low variation among folds, so the algorith is consistent.*
+   Better results using random forest algorithm.
+   About RMSE of  prediction: 1.25, Mean Absolute Error (MAE): 0.99
 
-Better results with Random forest. However, I also had good results with decision tree. I also used Support Vector Regression. It had a bit worse results.
-Of course, there are many methods to optimize the parameters of the models, like the n_estimator of Random Forest, which gives us better results.
 
-Cross Validation to avoid overfitting: the algorithm is consistent. Low variation between the folds.
+
+
+
 
