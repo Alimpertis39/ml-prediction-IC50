@@ -19,6 +19,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
+from sklearn.ensemble import RandomForestClassifier
+
 
 def bioactivity_class_fun(ic50):
     if float(ic50) < 1:
@@ -280,7 +282,7 @@ X = df_train_filtered_profile_matrix_cell_info.drop(
 y = df_train_filtered_profile_matrix_cell_info['IC50']  # Target variable
 
 # (90% training, 10% validation/test)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42, shuffle=True)
+X_train, X_validation, y_train, y_validation = train_test_split(X, y, test_size=0.1, random_state=42, shuffle=True)
 print('train set rows and columns before pca\n')
 print(X_train.shape[0])
 print(X_train.shape[1])
@@ -294,13 +296,12 @@ print('train set  rows and columns after pca\n')
 print(X_train_pca.shape[0])
 print(X_train_pca.shape[1])
 
-X_test_pca = pca.transform(X_test)
+X_validation_pca = pca.transform(X_validation)
 
 print('finished pca')
 rf_regressor = RandomForestRegressor(n_estimators=50, random_state=42)
 
 rf_regressor.fit(X_train_pca, y_train)
-y_pred = rf_regressor.predict(X_test_pca)
 
 # svr_regressor = svr_regressor = SVR(kernel='linear', C=1.0)
 
@@ -308,7 +309,7 @@ y_pred = rf_regressor.predict(X_test_pca)
 
 # y_pred = svr_regressor.predict(X_test_pca)
 
-y_pred = rf_regressor.predict(X_test_pca)
+y_pred = rf_regressor.predict(X_validation_pca)
 
 # Perform k-fold cross-validation
 # k = 5
@@ -322,16 +323,16 @@ y_pred = rf_regressor.predict(X_test_pca)
 # print(f"CV - Mean R-squared: {mean_r2:.2f}")
 # print(f"CV - Standard Deviation of R-squared: {std_r2:.2f}")
 
-
-mse = mean_squared_error(y_test, y_pred)
+print('Errors on the validation set using RandomForestRegressor')
+mse = mean_squared_error(y_validation, y_pred)
 rmse = sqrt(mse)
 print(f"RMSE of  prediction: {rmse:.2f}")
 
-mae = mean_absolute_error(y_test, y_pred)
+mae = mean_absolute_error(y_validation, y_pred)
 print(f"Mean Absolute Error (MAE): {mae:.2f}")
 
 plt.figure(figsize=(8, 6))
-plt.scatter(y_test, y_pred, facecolors='none', edgecolors='orange', marker='o', label='True vs. Predicted')
+plt.scatter(y_validation, y_pred, facecolors='none', edgecolors='orange', marker='o', label='True vs. Predicted')
 
 plt.xlabel('True Values')
 plt.ylabel('Predicted Values')
@@ -351,13 +352,36 @@ X_test_final = df_test_filtered_profile_matrix_cell_info.drop(
 y_test_final = df_test_filtered_profile_matrix_cell_info['IC50']  # Target variable
 X_final_test_pca = pca.transform(X_test_final)
 print('End of PCA')
-# rf_regressor = RandomForestRegressor(n_estimators=50, random_state=42)
-# rf_regressor.fit(X_train_pca, y_train)
 y_pred_final = rf_regressor.predict(X_final_test_pca)
-
+print('Errors on the test set using RandomForestRegressor')
 mse = mean_squared_error(y_test_final, y_pred_final)
 rmse = sqrt(mse)
 print(f"RMSE of  prediction: {rmse:.2f}")
 
 mae = mean_absolute_error(y_test_final, y_pred_final)
 print(f"Mean Absolute Error (MAE): {mae:.2f}")
+
+############################################################################
+
+y = df_train_filtered_profile_matrix_cell_info['bioactivity_class']  # Target variable
+X_train, X_validation, y_train, y_validation = train_test_split(X, y, test_size=0.1, random_state=42, shuffle=True)
+X_train_pca = pca.fit_transform(X_train)
+X_validation_pca = pca.transform(X_validation)
+
+rf_clf = RandomForestClassifier(n_estimators=50 ,random_state=42)
+
+rf_clf.fit(X_train_pca, y_train)
+y_pred = rf_clf.predict(X_validation_pca)
+
+accuracy_validation = accuracy_score(y_validation, y_pred)
+print('Errors on the validation set using RandomForestClassification')
+print('Accuracy of test set {}'.format(accuracy_validation))
+
+y_test_final = df_test_filtered_profile_matrix_cell_info['bioactivity_class']  # Target variable
+print('End of PCA')
+
+y_pred_final = rf_clf.predict(X_final_test_pca)
+
+accuracy_test_final = accuracy_score(y_test_final, y_pred_final)
+print('Errors on the test set using RandomForestClassification')
+print('Accuracy of test set {}'.format(accuracy_test_final))
