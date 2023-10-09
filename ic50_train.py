@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import copy
 import pandas as pd
@@ -26,9 +28,10 @@ def bioactivity_class_fun(ic50):
         return 'intermediate'
 
 
-def extract_genes_from_pickle(file):
+def extract_genes_from_pickle(file_pickle):
     with open(file_pickle, 'rb') as file:
         gene_list = pickle.load(file)
+    print(gene_list)
     return gene_list
 
 
@@ -258,6 +261,8 @@ print(X_train.shape[1])
 pca = PCA(n_components=0.90, random_state=42)  # Retain 90% of the variance
 
 X_train_pca = pca.fit_transform(X_train)
+explained_variance = pca.explained_variance_ratio_
+print("Explained Variance Ratios:\n", explained_variance)
 print('train set  rows and columns after pca\n')
 print(X_train_pca.shape[0])
 print(X_train_pca.shape[1])
@@ -278,7 +283,7 @@ y_pred = rf_regressor.predict(X_test_pca)
 
 y_pred = rf_regressor.predict(X_test_pca)
 
-# Perform k-fold cross-validation 
+# Perform k-fold cross-validation
 # k = 5
 # cross_val_scores = cross_val_score(rf_regressor, X_train_pca, y_train, cv=k, scoring='r2')
 # # cross_val_scores = cross_val_score(tree_regressor, X_train_pca, y_train, cv=k, scoring='r2')
@@ -308,4 +313,24 @@ plt.plot([min(y_train), max(y_train)], [min(y_train), max(y_train)],
 
 plt.legend()
 plt.title('True vs. Predicted Values')
+# plt.show()
 plt.savefig('predicted_vs_true_values.png')
+print('The end')
+
+
+print(df_train_filtered_profile_matrix_cell_info.head(25))
+X_test_final = df_test_filtered_profile_matrix_cell_info.drop(
+    columns=['IC50', 'drug', 'cell_line', 'bioactivity_class', 'TCGA'])  # Features
+y_test_final = df_test_filtered_profile_matrix_cell_info['IC50']  # Target variable
+X_final_test_pca = pca.transform(X_test_final)
+print('End of PCA')
+# rf_regressor = RandomForestRegressor(n_estimators=50, random_state=42)
+# rf_regressor.fit(X_train_pca, y_train)
+y_pred_final = rf_regressor.predict(X_final_test_pca)
+
+mse = mean_squared_error(y_test_final, y_pred_final)
+rmse = sqrt(mse)
+print(f"RMSE of  prediction: {rmse:.2f}")
+
+mae = mean_absolute_error(y_test_final, y_pred_final)
+print(f"Mean Absolute Error (MAE): {mae:.2f}")
