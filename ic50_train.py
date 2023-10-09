@@ -7,7 +7,7 @@ import pandas as pd
 import pickle
 from rdkit import Chem
 from rdkit.Chem import AllChem
-# from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.svm import SVR
 from sklearn.decomposition import PCA
@@ -17,7 +17,8 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
-
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
 
 def bioactivity_class_fun(ic50):
     if float(ic50) < 1:
@@ -244,8 +245,34 @@ df_test_filtered_profile_matrix_cell_info['bioactivity_class'] = df_test_filtere
 df_train_filtered_profile_matrix_cell_info['morgan_fingerprint'] = df_train_filtered_profile_matrix_cell_info[
     'morgan_fingerprint'].apply(lambda x: np.sum(x))
 
+
+# Normalize the train set and apply the mean and the std to the test set
+scalers = {}  # Dictionary to store scalers for each column
+
+for column in genes_list:
+    scaler = StandardScaler()
+    if column not in list(df_train_filtered_profile_matrix_cell_info.columns):
+        continue
+    df_train_filtered_profile_matrix_cell_info[column] = scaler.fit_transform(df_train_filtered_profile_matrix_cell_info[[column]])
+    scalers[column] = {
+        'mean': scaler.mean_[0],
+        'std': scaler.scale_[0]
+    }
+
+
 df_test_filtered_profile_matrix_cell_info['morgan_fingerprint'] = df_test_filtered_profile_matrix_cell_info[
     'morgan_fingerprint'].apply(lambda x: np.sum(x))
+
+for column in df_test_filtered_profile_matrix_cell_info.columns:
+    if column not in list(df_test_filtered_profile_matrix_cell_info.columns):
+        continue
+    if column in scalers:
+        mean = scalers[column]['mean']
+        std = scalers[column]['std']
+        df_test_filtered_profile_matrix_cell_info[column] = (df_test_filtered_profile_matrix_cell_info[column] - mean) / std
+    else:
+        # Handle the case where the column is not found in scalers (e.g., if it's a new column)
+        print(f"Column '{column}' not found in scalers. Handle this case as needed.")
 
 print(df_train_filtered_profile_matrix_cell_info.head(25))
 X = df_train_filtered_profile_matrix_cell_info.drop(
