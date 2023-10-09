@@ -148,7 +148,6 @@ print('The rows of train after dropping duplicates: ', rows)
 df_test_filtered_negatives_duplicates = remove_duplicates(df_test_filtered_negatives)
 rows = len(df_test_filtered_negatives_duplicates.axes[0])
 print('The rows of train after dropping duplicates: ', rows)
-
 ###################################################################################################
 
 print('-------------------------Morgan Fingerprints for train set---------------------')
@@ -219,24 +218,22 @@ df_test_filtered_profile_matrix_cell_info = df_test_filtered_profile_matrix_cell
 # Add a new categorical variable depending on the target value that I apply one hot encoding to it
 df_train_filtered_profile_matrix_cell_info['bioactivity_class'] = df_train_filtered_profile_matrix_cell_info[
     'IC50'].apply(bioactivity_class_fun)
-category_counts = df_train_filtered_profile_matrix_cell_info['bioactivity_class'].value_counts()
-print(category_counts)
-# plt.figure(figsize=(8,6))
-# category_counts.plot(kind='bar', color='skyblue')
-# plt.xlabel('Bioactivity class')
-# plt.xlabel('Frequency')
-# plt.show()
-one_hot_encoded = pd.get_dummies(df_train_filtered_profile_matrix_cell_info['bioactivity_class'],
-                                 prefix='bioactivity_class').astype(int)
-df_train_filtered_profile_matrix_cell_info = pd.concat([df_train_filtered_profile_matrix_cell_info, one_hot_encoded],
-                                                       axis=1)
+bioactivity_class_counts = df_train_filtered_profile_matrix_cell_info['bioactivity_class'].value_counts()
+categories = bioactivity_class_counts.index
+counts = bioactivity_class_counts.values
+plt.figure(figsize=(8, 6))
+plt.bar(categories, counts)
+plt.title('Frequencies of Bioactivity Classes')
+plt.xlabel('Category')
+plt.ylabel('Count')
+plt.xticks(rotation=45)
+# Show the plot
+plt.savefig('frequencies.png')
+plt.close()
+
 
 df_test_filtered_profile_matrix_cell_info['bioactivity_class'] = df_test_filtered_profile_matrix_cell_info[
     'IC50'].apply(bioactivity_class_fun)
-one_hot_encoded = pd.get_dummies(df_test_filtered_profile_matrix_cell_info['bioactivity_class'],
-                                 prefix='bioactivity_class').astype(int)
-df_test_filtered_profile_matrix_cell_info = pd.concat([df_test_filtered_profile_matrix_cell_info, one_hot_encoded],
-                                                      axis=1)
 
 ################################################################################################################
 
@@ -311,4 +308,4 @@ plt.plot([min(y_train), max(y_train)], [min(y_train), max(y_train)],
 
 plt.legend()
 plt.title('True vs. Predicted Values')
-plt.show()
+plt.savefig('predicted_vs_true_values.png')
