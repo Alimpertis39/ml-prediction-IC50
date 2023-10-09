@@ -34,6 +34,11 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
  ### Interpretation
  1. Scatter plot with true and predicted values, and the x=y line to compare with the optimal prediction.
  2. Barplots with the frequencies of the bioactivity class that explained the data (descriptive analysis)
+
+
+ ### How to run
+ Navigate to the folder that the files exist (the gene expression matrix is not uploaded to the repo due to the size). 
+ Run the IC50_train.py (python 3 IC50_train.py) 
      
   
 
