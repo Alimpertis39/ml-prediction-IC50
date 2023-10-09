@@ -18,8 +18,8 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
 5. Create a new categorical variable based on the IC50 value called bioactivity class. (I cannot use it on the training step, because it is result of the target variable and it would cause bias, However, we can use it as a target variable in any classification model).
    *We can use these classes either for classification models or to classify the predicted results and comparing to the classified true values*
 7. From the Morgan Fingerprints for each drug structure, take the total number of ones.
-8. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
-   * One feature engineering step that improve the results would be normalization on the profile matrix data. Then the Z-score used the mean and the std of each column(expressed gene). Important: these mean and std of the train set would used on the test set in order to avoid bias on the test set* 
+8. The values of the profile matrix data are normalized. The Z-scores used the mean and the std of each column(expressed gene). Important: these mean and std of the train set would used on the test set in order to avoid bias on the test set.
+9. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
 
 ### Model development
 1. Random Forest (Multiple decision trees combined to make predictions)
