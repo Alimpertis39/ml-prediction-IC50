@@ -15,7 +15,7 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
 2. After the data preprocessing of the gene expression profile matrix and the cell line info, the cell lines of the intersection of these two datasets are kept in order to used.
 3. Then, merge these datasets to the train and test sets to integrate extra information and remove the NaN value rows.
 4. The TCGA value, which is a categorical variable, is encoded with one-hot encoding, and therefore create binary columns for each one of the possible labels of the categorical variable.
-5. Create a new categorical variable based on the
+5. Create a new categorical variable based on the IC50 value called bioactivity class. (I cannot use it on the training step, because it is result of the target variable and it would cause overfitting, However, we can use it as a target variable in any classification model).
 6. From the Morgan Fingerprints for each drug structure, take the total number of ones.
 7. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
    * One feature engineering that improve the results would be normalization on the profile matrix data. Then the Z-score used the mean and the std of each column(expressed gene). Important: these mean and std of the train set would used on the test set in order to avoid bias on the test set* 
