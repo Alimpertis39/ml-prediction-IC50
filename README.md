@@ -28,7 +28,7 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
    *Another way to improve the results would be to make optimization parameter, e.g. optimization of the n_estimator of random forest algorithm*
    *Apply Cross Validation with 5 folds to have a more robust model's performance. Important that the performance was almost similar, low variation among folds, so the algorith is consistent.*
    Better results using random forest algorithm. In order to validate the results, I split the training set into training (90%) and validation (10%) sets. 
-   About RMSE of  prediction: 1.64, Mean Absolute Error (MAE): 1.33
+   About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.30
 
  ### Interpretation
  1. Scatter plot with true and predicted values, and the x=y line to compare with the optimal prediction.
