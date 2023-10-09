@@ -24,7 +24,7 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
 ### Model development
 1. Random Forest (Multiple decision trees combined to make predictions)
 2. SVR (Support Vector Regression)
-3. Random Forest Classification (to predict the bioactivity class(3 classes)) ~ over than 70% prediction 
+3. Random Forest Classification (to predict the bioactivity class(3 classes)) ~ just over than 70% prediction 
    
    *Another way to improve the results would be to make optimization parameter, e.g. optimization of the n_estimator of random forest algorithm*
    *Apply Cross Validation with 5 folds to have a more robust model's performance. Important that the performance was almost similar, low variation among folds, so the algorith is consistent.*
