@@ -29,6 +29,10 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
    Better results using random forest algorithm.
    About RMSE of  prediction: 1.25, Mean Absolute Error (MAE): 0.99
 
+   ### Interpretation
+   1. Scatter plot with true and predicted values, and the x=y line to compare with the optimal prediction.
+  
+
 
 
 
