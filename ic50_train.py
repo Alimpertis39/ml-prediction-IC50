@@ -219,6 +219,13 @@ df_test_filtered_profile_matrix_cell_info = df_test_filtered_profile_matrix_cell
 # Add a new categorical variable depending on the target value that I apply one hot encoding to it
 df_train_filtered_profile_matrix_cell_info['bioactivity_class'] = df_train_filtered_profile_matrix_cell_info[
     'IC50'].apply(bioactivity_class_fun)
+category_counts = df_train_filtered_profile_matrix_cell_info['bioactivity_class'].value_counts()
+print(category_counts)
+# plt.figure(figsize=(8,6))
+# category_counts.plot(kind='bar', color='skyblue')
+# plt.xlabel('Bioactivity class')
+# plt.xlabel('Frequency')
+# plt.show()
 one_hot_encoded = pd.get_dummies(df_train_filtered_profile_matrix_cell_info['bioactivity_class'],
                                  prefix='bioactivity_class').astype(int)
 df_train_filtered_profile_matrix_cell_info = pd.concat([df_train_filtered_profile_matrix_cell_info, one_hot_encoded],
