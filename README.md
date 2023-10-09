@@ -22,14 +22,14 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
 9. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
 
 ### Model development
-1. Random Forest (Multiple decision trees combined to make predictions)
+1. Random Forest (Multiple decision trees combined to make predictions) ~ About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.29
 2. SVR (Support Vector Regression)
 3. Random Forest Classification (to predict the bioactivity class(3 classes)) ~ just over than 70% prediction 
    
    *Another way to improve the results would be to make optimization parameter, e.g. optimization of the n_estimator of random forest algorithm*
    *Apply Cross Validation with 5 folds to have a more robust model's performance. Important that the performance was almost similar, low variation among folds, so the algorith is consistent.*
    Better results using random forest algorithm. In order to validate the results, I split the training set into training (90%) and validation (10%) sets. 
-   About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.30
+   About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.29
 
  ### Interpretation
  1. Scatter plot with true and predicted values, and the x=y line to compare with the optimal prediction.
