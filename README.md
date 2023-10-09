@@ -18,21 +18,27 @@ After loading all the data files (train, test , gene_expression_matrix, cell_lin
 5. Create a new categorical variable based on the IC50 value called bioactivity class. (I cannot use it on the training step, because it is result of the target variable and it would cause bias, However, we can use it as a target variable in any classification model).
    *We can use these classes either for classification models or to classify the predicted results and comparing to the classified true values*
 7. From the Morgan Fingerprints for each drug structure, take the total number of ones.
-8. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
-   * One feature engineering step that improve the results would be normalization on the profile matrix data. Then the Z-score used the mean and the std of each column(expressed gene). Important: these mean and std of the train set would used on the test set in order to avoid bias on the test set* 
+8. The values of the profile matrix data are normalized. The Z-scores used the mean and the std of each column(expressed gene). Important: these mean and std of the train set would used on the test set in order to avoid bias on the test set.
+9. Finally, apply PCA to reduce the number of columns, keeping the 90% of the variance that explained the original columns.
 
 ### Model development
-1. Random Forest (Multiple decision trees combined to make predictions)
+1. Random Forest (Multiple decision trees combined to make predictions) ~ About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.29
 2. SVR (Support Vector Regression)
+3. Random Forest Classification (to predict the bioactivity class(3 classes)) ~ just over than 70% prediction 
    
    *Another way to improve the results would be to make optimization parameter, e.g. optimization of the n_estimator of random forest algorithm*
    *Apply Cross Validation with 5 folds to have a more robust model's performance. Important that the performance was almost similar, low variation among folds, so the algorith is consistent.*
    Better results using random forest algorithm. In order to validate the results, I split the training set into training (90%) and validation (10%) sets. 
-   About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.30
+   About RMSE of  prediction: 1.62, Mean Absolute Error (MAE): 1.29
 
  ### Interpretation
  1. Scatter plot with true and predicted values, and the x=y line to compare with the optimal prediction.
  2. Barplots with the frequencies of the bioactivity class that explained the data (descriptive analysis)
+
+
+ ### How to run
+ Navigate to the folder that the files exist (the gene expression matrix is not uploaded to the repo due to the size). 
+ Run the IC50_train.py (python 3 IC50_train.py) 
      
   
 
